@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgresql-db
+  namespace: bioapp
+spec:
+  serviceName: postgresql-db-service
+  selector:
+    matchLabels:
+      app: postgresql-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresql-db
+    spec:
+      containers:
+        - name: postgresql-db
+          image: postgres:latest
+          volumeMounts:
+            - name: postgresql-db-disk
+              mountPath: /data
+            - name: postgresql-db-initdb
+              mountPath: /docker-entrypoint-initdb.d
+          envFrom:
+          - configMapRef:
+              name: postgres-db-config
+          - secretRef:
+              name: postgres-db-secret
+      volumes:
+        - name: postgresql-db-initdb
+          configMap:
+            name: postgres-db-config-initdb
+  volumeClaimTemplates:
+    - metadata:
+        name: postgresql-db-disk
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

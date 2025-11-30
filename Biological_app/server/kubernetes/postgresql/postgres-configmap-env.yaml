@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-db-config
+  labels:
+    app: postgresql-db
+  namespace: bioapp
+data:
+  POSTGRES_DB: bio-blockchain
+  POSTGRES_HOST_AUTH_METHOD: trust # No password required for login
+  PGDATA: /data/pgdata

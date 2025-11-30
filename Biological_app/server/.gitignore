@@ -1,0 +1,14 @@
+env.sh
+config.env
+package-lock.json
+
+node_modules
+**__pycache__
+
+logs.txt
+loginLog.txt
+
+**secret.yaml
+
+package-lock.json
+./dist

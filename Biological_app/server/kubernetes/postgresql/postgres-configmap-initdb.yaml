@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-db-config-initdb
+  labels:
+    app: postgresql-db
+  namespace: bioapp
+data:
+  initdb.sql: |
+        -- Extensions
+        CREATE EXTENSION IF NOT EXISTS pg_trgm;
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+        -- Drop (droppable only when no dependency)
+        DROP TABLE IF EXISTS bird;
+        DROP TABLE IF EXISTS account;
+        DROP TABLE IF EXISTS session;
+        
+        DROP INDEX IF EXISTS IDX_session_expire;
+
+        -- Create
+        CREATE TABLE bird(
+            id              serial PRIMARY KEY NOT NULL,
+            name            text NOT NULL,
+            description     text NOT NULL ,
+            photo           text NOT NULL,
+            lon             integer NOT NULL DEFAULT 0,
+            lat             integer NOT NULL DEFAULT 0,
+            creator         text NOT NULL,
+            upload          bool NOT NULL DEFAULT false,
+            time            integer NOT NULL DEFAULT extract(epoch from now())
+        );
+        
+        CREATE TABLE account(
+            uuid uuid NOT NULL DEFAULT uuid_generate_v4(),
+            account text UNIQUE NOT NULL ,
+            password text NOT NULL,
+            money integer NOT NULL DEFAULT 0,
+            admin bool NOT NULL DEFAULT false
+        );
+
+      
+    

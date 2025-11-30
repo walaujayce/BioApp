@@ -1,0 +1,1413 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bioserver api",
+    "description": "This is Bioserver api document\n",
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/grorge/bioserver/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://bioapp-backend.yikuo.dev/",
+      "description": "Bioserver"
+    },
+    {
+      "url": "http://localhost:8080",
+      "description": "Bioserver local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "account",
+      "description": "帳號操作"
+    },
+    {
+      "name": "user_bird",
+      "description": "鳥類資料(使用者)"
+    },
+    {
+      "name": "admin_bird",
+      "description": "鳥類資料(管理員)"
+    },
+    {
+      "name": "other",
+      "description": "其他功能"
+    }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "登入系統",
+        "operationId": "login",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/account"
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "data": [
+                    "accessToken"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                },
+                "example": [
+                  {
+                    "code": 1001,
+                    "status": "ERROR",
+                    "message": "account does not exist"
+                  },
+                  {
+                    "code": 1002,
+                    "status": "ERROR",
+                    "message": "wrong password or account"
+                  },
+                  {
+                    "code": 1004,
+                    "status": "ERROR",
+                    "message": " Too Many Failed Attempts (Locked after 3 failed attempts)"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/register": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "註冊系統",
+        "description": "登入帳號與密碼長度規定須至少 8 碼(帳號及密碼必須限制不相同，也需要為英文數字組合)。",
+        "operationId": "register",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/account"
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                },
+                "example": [
+                  {
+                    "code": 1005,
+                    "status": "ERROR",
+                    "message": "Wrong account or password format"
+                  },
+                  {
+                    "code": 1006,
+                    "status": "ERROR",
+                    "message": "This account has exist"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/forgetPassword": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "忘記密碼",
+        "operationId": "forgetPassword",
+        "requestBody": {
+          "description": "you should provide email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_forgetPassword_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                },
+                "example": [
+                  {
+                    "code": 1006,
+                    "status": "ERROR",
+                    "message": "This email has not exist"
+                  },
+                  {
+                    "code": 400,
+                    "status": "ERROR",
+                    "message": "You lack necessary parameter"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/resetPassword": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "重設密碼",
+        "operationId": "resetPassword",
+        "requestBody": {
+          "description": "you should provide email and key",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_resetPassword_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                },
+                "example": [
+                  {
+                    "code": 1005,
+                    "status": "ERROR",
+                    "message": "This operation is timeout"
+                  },
+                  {
+                    "code": 1005,
+                    "status": "ERROR",
+                    "message": "Wrong password format"
+                  },
+                  {
+                    "code": 1005,
+                    "status": "ERROR",
+                    "message": "invalid verify"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/checkEmail/{code}": {
+      "get": {
+        "tags": [
+          "account"
+        ],
+        "summary": "驗證email",
+        "description": "將jwt的code代進params進行驗證",
+        "operationId": "get_checkEmail",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          }
+        }
+      }
+    },
+    "/api/checkEmail/": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "請求驗證email",
+        "description": "請求驗證email,冷卻時間3分鐘",
+        "operationId": "post_checkEmail",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/update_password": {
+      "post": {
+        "tags": [
+          "account"
+        ],
+        "summary": "修改密碼",
+        "operationId": "update_password",
+        "requestBody": {
+          "description": "you should provide new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_update_password_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                },
+                "example": [
+                  {
+                    "code": 1005,
+                    "status": "ERROR",
+                    "message": "Wrong account or password format"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/data_bird": {
+      "get": {
+        "tags": [
+          "user_bird"
+        ],
+        "summary": "取得使用者上傳過的資料",
+        "description": "取得使用者曾經上傳過的資料，st代表開始位置，從0開始計算，回傳num筆，如果使用者上傳編號未到st+num筆則只回傳到使用者目前最大筆數。",
+        "operationId": "get_data_bird",
+        "parameters": [
+          {
+            "name": "st",
+            "in": "query",
+            "description": "資料順序開始位置",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "取得資料數量",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user_bird"
+        ],
+        "summary": "更新使用者的鳥類資料",
+        "description": "修改之前上傳過的資料，id為要修改資料的編號",
+        "operationId": "put_data_bird",
+        "requestBody": {
+          "description": "you should provide new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/put_bird_data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "user_bird"
+        ],
+        "summary": "上傳使用者的鳥類資料",
+        "description": "取得使用者上傳過的資料",
+        "operationId": "post_data_bird",
+        "requestBody": {
+          "description": "you should provide new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/post_bird_data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "id": 0
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "user_bird"
+        ],
+        "summary": "刪除使用者上傳的鳥類資料",
+        "description": "刪除使用者曾經上傳過的資料，id為要刪除資料的編號",
+        "operationId": "delete_data_bird",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "要刪除資料編號",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "invalid",
+            "in": "query",
+            "description": "資料是否違法",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/near_data_bird": {
+      "get": {
+        "tags": [
+          "user_bird"
+        ],
+        "summary": "取得目前最近鳥類資料",
+        "description": "取得目前最近鳥類資料，st代表開始位置，從0開始計算，回傳num筆，如果使用者上傳編號未到st+num筆則只回傳到使用者目前最大筆數，lon代表使用者經度，lat代表使用者緯度。",
+        "operationId": "get_near_data_bird",
+        "parameters": [
+          {
+            "name": "st",
+            "in": "query",
+            "description": "資料順序開始位置",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "取得資料數量",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "以某緯度做最近資料搜查，需要和lon一起填寫",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "description": "以某經度做最近資料搜查，需要和lat一起填寫",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "指定某個id的資料",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "以某項參數做排序,可接授\"id\", \"name\", \"description\", \"lon\", \"lat\", \"time\"",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "id"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "DESC或是ASC",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "DESC"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "關鍵字搜尋",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "upload",
+            "in": "query",
+            "description": "是否上鏈",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/uncheck_data_bird": {
+      "get": {
+        "tags": [
+          "admin_bird"
+        ],
+        "summary": "取得目前資料庫所有資料",
+        "description": "取得目前資料庫所有資料，st代表開始位置，從0開始計算，回傳num筆，如果使用者上傳編號未到st+num筆則只回傳到使用者目前最大筆數。如果有給lon和lat參數則只會回傳10公里內的資料。",
+        "operationId": "get_uncheck_data_bird",
+        "parameters": [
+          {
+            "name": "st",
+            "in": "query",
+            "description": "資料順序開始位置",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "取得資料數量",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "指定某個id的資料",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "以某項參數做排序,可接授\"id\", \"name\", \"description\", \"lon\", \"lat\", \"time\"",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "id"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "DESC或是ASC",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "default": "DESC"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "關鍵字搜尋",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "upload",
+            "in": "query",
+            "description": "是否上鏈",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "以某緯度做最近資料搜查，需要和lon一起填寫",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "description": "以某經度做最近資料搜查，需要和lat一起填寫",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "admin_bird"
+        ],
+        "summary": "將資料上傳上鏈",
+        "description": "將資料上傳上鏈，id為該筆資料編號",
+        "operationId": "post_uncheck_data_bird",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_uncheck_data_bird_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "URL": "hash_url"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/blockchain_data_bird": {
+      "get": {
+        "tags": [
+          "admin_bird"
+        ],
+        "summary": "取得鏈上資料",
+        "description": "取得鏈上資料，st代表開始位置，從0開始計算，回傳num筆，如果使用者上傳編號未到st+num筆則只回傳到使用者目前最大筆數。",
+        "operationId": "get_blockchain_data_bird",
+        "parameters": [
+          {
+            "name": "st",
+            "in": "query",
+            "description": "資料順序開始位置",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "description": "取得資料數量",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/money": {
+      "get": {
+        "tags": [
+          "other"
+        ],
+        "summary": "取得使用者身上點數",
+        "description": "取得使用者身上點數",
+        "operationId": "get_money",
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "other"
+        ],
+        "summary": "給予其他使用者金錢",
+        "description": "給予其他使用者金錢",
+        "operationId": "post_money",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_money_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response_ERROR"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin": {
+      "get": {
+        "tags": [
+          "other"
+        ],
+        "summary": "檢查是否是管理員",
+        "operationId": "get_admin",
+        "parameters": [
+          {
+            "name": "queryname",
+            "in": "query",
+            "description": "admin account",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_5"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "other"
+        ],
+        "summary": "修改管理員身份",
+        "operationId": "post_admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_admin_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "wrong request"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "response_ERROR": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "error"
+          },
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "account": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "get_bird_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "integer"
+          },
+          "lat": {
+            "type": "integer"
+          },
+          "upload": {
+            "type": "boolean"
+          },
+          "time": {
+            "type": "integer"
+          }
+        }
+      },
+      "post_bird_data": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "integer"
+          },
+          "lat": {
+            "type": "integer"
+          },
+          "time": {
+            "type": "integer"
+          }
+        }
+      },
+      "put_bird_data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "blockchain_data_bird": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "photo": {
+            "type": "string"
+          },
+          "lon": {
+            "type": "integer"
+          },
+          "lat": {
+            "type": "integer"
+          },
+          "time": {
+            "type": "integer"
+          },
+          "createtime": {
+            "type": "integer"
+          }
+        }
+      },
+      "api_forgetPassword_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "api_resetPassword_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "accessToken": {
+            "type": "string"
+          }
+        }
+      },
+      "api_update_password_body": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/get_bird_data"
+            }
+          },
+          "len": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_1": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/get_bird_data"
+            }
+          },
+          "len": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "api_uncheck_data_bird_body": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/blockchain_data_bird"
+            }
+          },
+          "len": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_3": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success"
+          },
+          "money": {
+            "type": "integer",
+            "default": 0
+          }
+        }
+      },
+      "api_money_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "money": {
+            "type": "integer"
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success"
+          }
+        }
+      },
+      "inline_response_200_5": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "success"
+          },
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "api_admin_body": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string"
+          },
+          "admin": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "account": {
+        "description": "you should provide account and passowrd",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/account"
+            }
+          }
+        },
+        "required": true
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

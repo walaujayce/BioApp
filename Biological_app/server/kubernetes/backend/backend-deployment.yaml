@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+  namespace: bioapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: yiprograms/bio-server-backend:161
+        envFrom:
+          - configMapRef:
+              name: backend-config
+          - secretRef:
+              name: backend-secret
+        volumeMounts:
+        - name: secret-volume
+          mountPath: "/app/config/firebase-secret"
+          readOnly: true
+        ports:
+        - containerPort: 8080
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: firebase-secret
+          items:
+            - key: biological-324006-firebase-adminsdk-4snru-e6da79fa36.json
+              path: biological-324006-firebase-adminsdk-4snru-e6da79fa36.json

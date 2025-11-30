@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-routine
+  labels:
+    app: backend-routine
+  namespace: bioapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-routine
+  template:
+    metadata:
+      labels:
+        app: backend-routine
+    spec:
+      containers:
+      - name: backend-routine
+        image: grorge/bio-server-backend-routine:221
+        envFrom:
+          - configMapRef:
+              name: backend-config
+          - secretRef:
+              name: backend-secret
+        volumeMounts:
+        - name: secret-volume
+          mountPath: "/app/config/firebase-secret"
+          readOnly: true
+        ports:
+        - containerPort: 8080
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: firebase-secret
+          items:
+            - key: biological-324006-firebase-adminsdk-4snru-e6da79fa36.json
+              path: biological-324006-firebase-adminsdk-4snru-e6da79fa36.json

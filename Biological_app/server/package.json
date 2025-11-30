@@ -1,0 +1,50 @@
+{
+    "name": "biological-server",
+    "version": "1.0.0",
+    "description": "biological server.",
+    "main": "src/server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "watch": "nodemon src/server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.2.1",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-bearer-token": "^2.4.0",
+        "express-sanitizer": "^1.0.6",
+        "express-session": "^1.17.2",
+        "express-validator": "^7.0.1",
+        "express-xss-sanitizer": "^1.1.6",
+        "firebase-admin": "^11.5.0",
+        "googleapis": "^84.0.0",
+        "helmet": "^5.0.2",
+        "js-sha256": "^0.9.0",
+        "jsonwebtoken": "^8.5.1",
+        "limiter": "^2.1.0",
+        "moment": "^2.29.1",
+        "nodemailer": "^6.6.3",
+        "pg": "^8.6.0",
+        "pg-promise": "^10.10.2",
+        "pino-http": "^5.5.0",
+        "pino-pretty": "^5.1.1",
+        "salted-sha256": "^1.0.0",
+        "secure-compare": "^3.0.1",
+        "swagger-autogen": "^2.9.2",
+        "swagger-jsdoc": "^6.1.0",
+        "swagger-model-validator": "^3.0.20",
+        "swagger-ui-express": "^4.1.6",
+        "type-check": "^0.4.0",
+        "uuid": "^8.3.2",
+        "web3": "^1.3.6"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    }
+}

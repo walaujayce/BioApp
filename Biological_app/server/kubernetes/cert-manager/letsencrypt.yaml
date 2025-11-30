@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt
+  namespace: bioapp
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: bioapp-letsencrypt@yikuo.dev
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+    - selector:
+        dnsNames:
+        - bioapp-backend.yikuo.dev
+        - bioapp-kibana.yikuo.dev
+      dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: cloudflare-api-token-secret
+            key: api-token

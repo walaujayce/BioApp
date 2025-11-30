@@ -1,0 +1,15 @@
+import requests as re
+import json
+import config
+from config import session_requests
+
+data = {
+    "username":"Grorge1234",
+    "password":"Grorge456",
+    "email":"g12332196@yahoo.com",
+    "name": "grorge",
+    "verifyid":"eyJhbGciOiJSUzI1NiIsImtpZCI6ImY4NzZiNzIxNDAwYmZhZmEyOWQ0MTFmZTYwODE2YmRhZWMyM2IzODIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYmlvbG9naWNhbC0zMjQwMDYiLCJhdWQiOiJiaW9sb2dpY2FsLTMyNDAwNiIsImF1dGhfdGltZSI6MTY3NzgzMzU3NCwidXNlcl9pZCI6Ik90U0tEanh5QlVRR3hXT2o3cW5PbUg2QWdDRTMiLCJzdWIiOiJPdFNLRGp4eUJVUUd4V09qN3FuT21INkFnQ0UzIiwiaWF0IjoxNjc3ODMzNTc0LCJleHAiOjE2Nzc4MzcxNzQsInBob25lX251bWJlciI6Iis4ODY5Mzk0NzAzNzYiLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7InBob25lIjpbIis4ODY5Mzk0NzAzNzYiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwaG9uZSJ9fQ.RA3fheGvdHtXFQ-z_BiUM9KXHXZwgbmt1AL7qRXGZUZWYEkNxViEdPZo_j4hhgZpX-qUwTLDrLmv5tdlKNTm2dvJuVmotgHB38FTXcdvt4xC6hR3XP8TaRa9sIfjs_uKkiPGsnFPOmIaRn_NZGAfpSlTcTE-CC5HUpEaRl1u_9Pbm1OuspZuaNjggfI8Llxu9S58QJns5AP_06RLAfOB1tHbPV4_czyh3LNMDvY4ZTerDtLjgwlF2dNWkZCJaWsE8p8IMka_0QuGitHVBpQ5fx2tLw6Ygp2fXRlSZ-QyJQmu3E-ZZYcQ-8c9n94eDd6fTpVCDSAN1YBK5FKrHexsyw"
+}
+res= session_requests.post(config.url + 'register', json=data)#successful
+print(res)
+print(json.loads(res.text))

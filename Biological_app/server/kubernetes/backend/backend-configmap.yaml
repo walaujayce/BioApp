@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  labels:
+    app: backend
+  namespace: bioapp
+data:
+  PG_HOSTNAME: postgres-db-sv
+  PG_PORT: "5432"
+  PG_DB_NAME: bio-blockchain
